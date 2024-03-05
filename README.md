@@ -17,4 +17,5 @@ perlu install Postman untuk menjalankan REST API
 
 ## AKUN
 email : admin@mail.com
+
 password : password
