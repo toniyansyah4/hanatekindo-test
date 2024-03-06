@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('token')->plainTextToken;
 
+        User::where('id', $user->id)->update([
+            'user_status' => 1
+        ]);
+
         return response()->json([
             'token' => $token,
             'user' => $user
@@ -35,6 +40,9 @@ class AuthController extends Controller
     {
         try {
             if (Auth::check()) {
+                User::where('id', Auth::user()->id)->update([
+                    'user_status' => 0
+                ]);
                 $tokens = $request->user()->tokens;
                 foreach ($tokens as $token) {
                     $token->delete();
